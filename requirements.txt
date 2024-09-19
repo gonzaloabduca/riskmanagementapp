@@ -4,4 +4,5 @@ plotly
 numpy
 pandas_datareader
 pandas
+datetime
 scipy
