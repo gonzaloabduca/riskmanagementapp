@@ -232,6 +232,29 @@ fig.update_layout(title=f'Candlestick Chart for {company_name} ({ticker}) - {sel
 st.plotly_chart(fig)
 st.plotly_chart(fig6)
 
+# Calculate performance for specified periods
+def calculate_performance(data, period_days):
+    if len(data) < period_days:
+        return None
+    return (data['Close'][-1] - data['Close'][-period_days]) / data['Close'][-period_days] * 100
+
+performances = {
+    "1 Month": calculate_performance(data, 30),
+    "3 Months": calculate_performance(data, 90),
+    "6 Months": calculate_performance(data, 180),
+    "1 Year": calculate_performance(data, 365)
+}
+
+# Display performances
+st.markdown("### Performance")
+performance_cols = st.columns(len(performances))
+for i, (label, performance) in enumerate(performances.items()):
+    if performance is not None:
+        color = "green" if performance > 0 else "red"
+        performance_cols[i].markdown(f"<span style='color:{color}'>{label}: {performance:.2f}%</span>", unsafe_allow_html=True)
+    else:
+        performance_cols[i].markdown(f"{label}: N/A")
+
 # Show Signal Data in Streamlit
 st.markdown(f"### Trading Signals for {ticker}")
 st.table(signal_data[['MACD Signal', 'RSI Signal', 'Momentum Signal', 'Trend']].tail(1).T)  # Show last few rows of signal data
@@ -295,28 +318,6 @@ performance_df.loc[float_metrics] = performance_df.loc[float_metrics].applymap(l
 st.markdown("### Performance Metrics Comparison")
 st.table(performance_df)
 
-# Calculate performance for specified periods
-def calculate_performance(data, period_days):
-    if len(data) < period_days:
-        return None
-    return (data['Close'][-1] - data['Close'][-period_days]) / data['Close'][-period_days] * 100
-
-performances = {
-    "1 Month": calculate_performance(data, 30),
-    "3 Months": calculate_performance(data, 90),
-    "6 Months": calculate_performance(data, 180),
-    "1 Year": calculate_performance(data, 365)
-}
-
-# Display performances
-st.markdown("### Performance")
-performance_cols = st.columns(len(performances))
-for i, (label, performance) in enumerate(performances.items()):
-    if performance is not None:
-        color = "green" if performance > 0 else "red"
-        performance_cols[i].markdown(f"<span style='color:{color}'>{label}: {performance:.2f}%</span>", unsafe_allow_html=True)
-    else:
-        performance_cols[i].markdown(f"{label}: N/A")
 
 # Fetching monthly data
 monthly_data = yf.download(ticker, start=start, end=end, interval='1mo')
