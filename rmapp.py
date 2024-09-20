@@ -476,7 +476,7 @@ fig2.update_layout(title='Historical Relative Volume',
                    yaxis_title='Relative Volume')
 
 # Display the relative volume chart in the Streamlit app
-st.plotly_chart(fig2)
+# st.plotly_chart(fig2)
 
 # Calculate volume change for specified periods
 def calculate_volume_change(data, period_days):
