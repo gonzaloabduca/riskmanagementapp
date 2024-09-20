@@ -466,7 +466,7 @@ st.plotly_chart(fig5)
 # Calculate Historical Relative Volume
 data['3MonthAvgVolume'] = data['Volume'].rolling(window=90).mean()
 data['RelativeVolume'] = data['Volume'] / data['3MonthAvgVolume']
-
+current_rvol = data['RelativeVolume'].iloc[-1]
 # Create relative volume chart
 fig2 = go.Figure(data=[go.Bar(x=data.index, y=data['RelativeVolume'])])
 
@@ -493,6 +493,7 @@ volume_changes = {
 
 # Display volume changes
 st.markdown("### Volume Changes")
+st.markdown(f"**Current Relative Volume**: {current_rvol:.2f}")
 volume_change_cols = st.columns(len(volume_changes))
 for i, (label, change) in enumerate(volume_changes.items()):
     if change is not None:
