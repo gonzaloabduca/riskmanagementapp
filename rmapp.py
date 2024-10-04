@@ -134,6 +134,12 @@ def calculate_signals(ticker):
 # Title of the app
 st.title("Risk Management Trading App")
 
+# Subheader with links
+st.markdown("""
+**App created by [Gonzalo Abduca](https://www.linkedin.com/in/gonzaloabduca)**  
+[Watch my other apps](https://gonzaloabduca.github.io/GonzaloPortfolio.github.io/) | [Contact me on LinkedIn](https://www.linkedin.com/in/gonzaloabduca)
+""")
+
 # Sidebar for ticker symbol input
 st.sidebar.header("Stock Selection")
 ticker = st.sidebar.text_input("Ticker Symbol", value='AAPL', max_chars=10)
